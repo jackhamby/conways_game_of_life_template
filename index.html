@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/pixi-viewport@4.11.1/dist/viewport.js"></script>
+    </head>
+    <body>
+        <div id="container"></div>
+        <button style="width: 100px; height: 30px; font-size: medium; position: absolute;" id="toggle"> start </button>
+    </body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        } 
+        body {
+            margin: none !important;
+        }
+    </style>
+    <script src="./setup.js"></script>
+    <script>
+
+        // If the cell is alive, then it stays alive if it has either 2 or 3 live neighbors
+        // If the cell is dead, then it springs to life only in the case that it has 3 live neighbors
+        const runGame = () => {
+            if (ticks % INTERVAL === 0){   
+                const tilesToUpdate = [];
+                tiles.forEach((row) => {
+                    row.forEach((tile) => {
+                        const neighbors = getNeighbors(tile);
+                        let aliveNeighbors = 0;
+                        neighbors.forEach((neighbor) => {
+                            const x = Math.floor(tile.x / CELL_WIDTH);
+                            const y = Math.floor(tile.y / CELL_HEIGHT);
+                            if (neighbor.isAlive){
+                                aliveNeighbors += 1;
+                            }
+                        });
+
+                        if (tile.isAlive && aliveNeighbors !== 2 && aliveNeighbors !== 3){
+                            tilesToUpdate.push({
+                                 x: Math.floor(tile.x / CELL_WIDTH),
+                                 y: Math.floor(tile.y / CELL_HEIGHT),
+                                 isAlive: false
+                            })
+                        }
+                        if (!tile.isAlive && (aliveNeighbors === 3)){
+                            tilesToUpdate.push({
+                                x: Math.floor(tile.x / CELL_WIDTH),
+                                y: Math.floor(tile.y / CELL_HEIGHT),
+                                isAlive: true
+                            })
+                        }
+                    }); // Loop tiles
+                }); // Loop rows
+                tilesToUpdate.forEach((update) => {
+                    tiles[update.y][update.x].isAlive = update.isAlive;
+                })
+            }
+            ticks += 1;
+        }
+    </script>
+</html>
