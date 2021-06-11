@@ -24,38 +24,7 @@
         // If the cell is dead, then it springs to life only in the case that it has 3 live neighbors
         const runGame = () => {
             if (ticks % INTERVAL === 0){   
-                const tilesToUpdate = [];
-                tiles.forEach((row) => {
-                    row.forEach((tile) => {
-                        const neighbors = getNeighbors(tile);
-                        let aliveNeighbors = 0;
-                        neighbors.forEach((neighbor) => {
-                            const x = Math.floor(tile.x / CELL_WIDTH);
-                            const y = Math.floor(tile.y / CELL_HEIGHT);
-                            if (neighbor.isAlive){
-                                aliveNeighbors += 1;
-                            }
-                        });
-
-                        if (tile.isAlive && aliveNeighbors !== 2 && aliveNeighbors !== 3){
-                            tilesToUpdate.push({
-                                 x: Math.floor(tile.x / CELL_WIDTH),
-                                 y: Math.floor(tile.y / CELL_HEIGHT),
-                                 isAlive: false
-                            })
-                        }
-                        if (!tile.isAlive && (aliveNeighbors === 3)){
-                            tilesToUpdate.push({
-                                x: Math.floor(tile.x / CELL_WIDTH),
-                                y: Math.floor(tile.y / CELL_HEIGHT),
-                                isAlive: true
-                            })
-                        }
-                    }); // Loop tiles
-                }); // Loop rows
-                tilesToUpdate.forEach((update) => {
-                    tiles[update.y][update.x].isAlive = update.isAlive;
-                })
+                // Game logic here
             }
             ticks += 1;
         }
