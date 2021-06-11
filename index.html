@@ -19,12 +19,42 @@
     </style>
     <script src="./setup.js"></script>
     <script>
+        // ======================================================================================
+        // Global variable tiles, an array of arrays representing the board
+        // Each tile has the following properties,
+        // {
+        //     x: number,
+        //     y: number,
+        //     isAlive: number,
+        //     graphics: PIXI.Graphics
+        // }
+        //
+        // x: x position on the board
+        // y: y position on the board
+        // isAlive: if set to true, the tile will be highlighted. otherwise it will be empty
+        // graphics: a pixi graphics object, you shouldnt need to work with this at all
 
+        // This will log the tile in the upper left corner
+        console.log(tiles[0][0]);
+        // This will log the tile in the bottom right corner
+        console.log(tiles[(WORLD_HEIGHT / CELL_HEIGHT) - 1][(WORLD_WIDTH / CELL_WIDTH) - 1]);
+        // ========================================================================================
+
+        
+
+        // Challenge: try highlighting these tiles
+
+        // Challenge: try highlighting the top row
+
+        // Challenge: implement conways game of life
+        // The function below will be run every 60 frames when the start button is selected
+        // Conways rules
         // If the cell is alive, then it stays alive if it has either 2 or 3 live neighbors
         // If the cell is dead, then it springs to life only in the case that it has 3 live neighbors
+        let ticks = 0;
         const runGame = () => {
             if (ticks % INTERVAL === 0){   
-                // Game logic here
+                // Conways game logic here
             }
             ticks += 1;
         }
