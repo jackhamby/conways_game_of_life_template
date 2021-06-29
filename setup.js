@@ -1,5 +1,6 @@
 // Represents tiles on the board
-const tiles = []
+const tiles = [];
+const graphics = [];
 
 // Game constants
 const INTERVAL = 60;
@@ -42,41 +43,53 @@ for (let x = 0; x <= WORLD_WIDTH; x += CELL_WIDTH){
         .lineTo(x, WORLD_HEIGHT);
 }
 
-for (let y = 0; y < WORLD_HEIGHT; y += CELL_HEIGHT){
-    const row = [];
-    for(let x = 0; x < WORLD_WIDTH; x += CELL_WIDTH){
+for (let x = 0; x < WORLD_WIDTH; x += CELL_WIDTH){
+    const col = [];
+    const graphicsCol = [];
+    for(let y = 0; y < WORLD_HEIGHT; y += CELL_HEIGHT){
         const graphics = new PIXI.Graphics();
-        row.push({
-            y,
-            x,
-            graphics,
-            isAlive: false,
-        });
+        graphicsCol.push(graphics);
+        col.push(false);
         viewport.addChild(graphics);
     }
-    tiles.push(row);
+    tiles.push(col);
+    graphics.push(graphicsCol);
+    // tiles.push(row);
 }
 
 viewport.addChild(grid);
 
 app.ticker.add(() => {
-    tiles.forEach((row) => {
-        row.forEach((tile) => {
-            tile.graphics.clear();
-            if(tile.isAlive){
-                tile.graphics.beginFill(0xFFFF00);
-                tile.graphics.drawRect(tile.x, tile.y, CELL_WIDTH, CELL_HEIGHT);
+    const xLength = Math.floor(WORLD_WIDTH / CELL_WIDTH);
+    const yLength = Math.floor(WORLD_HEIGHT / CELL_HEIGHT);
+    for(let x = 0; x < xLength; x++){
+        for(let y = 0; y < yLength; y++){
+            graphics[x][y].clear();
+            if (tiles[x][y]){
+                const xPos = CELL_WIDTH * x;
+                const yPos = CELL_HEIGHT * y;
+                graphics[x][y].beginFill(0xFFFF00);
+                graphics[x][y].drawRect(xPos, yPos, CELL_WIDTH, CELL_HEIGHT); 
             }
-        });
-    });
+        }
+    }
 });
 
 // User events, game click and start/stop click
 viewport.on("clicked", (event) => {
+    const xLength = Math.floor(WORLD_WIDTH / CELL_WIDTH) - 1;
+    const yLength = Math.floor(WORLD_HEIGHT / CELL_HEIGHT) - 1;
     const xIndex = Math.floor(event.world.x / CELL_WIDTH);
-    const yIndex = Math.floor(event.world.y / CELL_HEIGHT);            
-    const tile = tiles[yIndex][xIndex];
-    tile.isAlive = !tile.isAlive;
+    const yIndex = Math.floor(event.world.y / CELL_HEIGHT);
+    if (xIndex < 0 ||
+        xIndex > xLength ||
+        yIndex < 0 ||
+        yIndex > yLength){
+            return;
+        }
+    console.log('here')
+    // debugger;
+    tiles[xIndex][yIndex] = !tiles[xIndex][yIndex];        
 });
 
 document.getElementById("toggle").addEventListener("click", (event) => {

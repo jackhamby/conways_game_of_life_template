@@ -1,0 +1,163 @@
+
+
+
+
+
+You Cheater
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/5.1.3/pixi.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/pixi-viewport@4.11.1/dist/viewport.js"></script>
+    </head>
+    <body>
+        <div id="container"></div>
+        <button style="width: 100px; height: 30px; font-size: medium; position: absolute;" id="toggle"> start </button>
+    </body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        } 
+        body {
+            margin: none !important;
+        }
+    </style>
+    <script src="./setup.js"></script>
+    <script>
+
+        // "tiles" global var
+        // array of arrays of booleans (a matrix of booleans)
+        // boolean value represents if the tile is alive or dead
+        // i.e. tiles[x][y] is the xth column of the yth row
+
+        // TODO: uncomment this!
+        // example: loop and set all tiles to alive
+        // for(let x = 0; x < tiles.length - 1; ++x){
+        //     for(let y = 0; y < tiles[x].length - 1; ++y){
+        //         tiles[x][y] = true;
+        //     }
+        // }
+
+        // Challenge: highlight the top row
+        // for (let x = 0; x < tiles.length; ++x){
+        //     tiles[x][0] = true;
+        // }
+
+        // Challenge: highlight the bottom row
+        // for (let y = 0; y < tiles[0].length; ++y){
+        //     tiles[0][y] = true;
+        // }
+
+        // Challenge: highlight a diagonal row (starting in either top right or top left)
+        // for (let x = 0; x < tiles.length; ++x){
+        //     for(let y = 0; y < tiles.length; ++y){
+        //         if (x == y){
+        //             tiles[x][y] = true;
+        //         }
+        //     }
+        // }
+
+
+        // Conways rules
+        // A "neighbor" is any adjacent cell, including diagonals. a cell will have 8 neighbors.
+        // If the cell is alive, then it stays alive if it has either 2 or 3 live neighbors
+        // If the cell is dead, then it springs to life only in the case that it has 3 live neighbors
+        const aliveNeighborCount = (x, y) => {
+            const xLength = Math.floor(WORLD_WIDTH / CELL_WIDTH) - 1;
+            const yLength = Math.floor(WORLD_HEIGHT / CELL_HEIGHT) - 1;
+            
+            if (x - 1 < 0 ||
+                x + 1 > (xLength - 1) ||
+                y - 1 < 0 ||
+                y + 1 > (yLength - 1)){
+                    return 0;
+                }
+            let aliveNeighbors = 0;
+
+            if (tiles[x - 1][y + 1]) aliveNeighbors += 1;
+            if (tiles[x][y + 1]) aliveNeighbors += 1;
+            if (tiles[x + 1][y + 1]) aliveNeighbors += 1;
+            
+            if (tiles[x - 1][y]) aliveNeighbors += 1;
+            if (tiles[x + 1][y]) aliveNeighbors += 1;
+            
+            if (tiles[x - 1][y - 1]) aliveNeighbors += 1;
+            if (tiles[x][y - 1]) aliveNeighbors += 1;
+            if (tiles[x + 1][y - 1]) aliveNeighbors += 1;
+
+            return aliveNeighbors;
+        }
+
+        // The function below will be run every 60 frames when the start button is selected
+        let ticks = 0;
+        const runGame = () => {
+            const xLength = Math.floor(WORLD_WIDTH / CELL_WIDTH) - 1;
+            const yLength = Math.floor(WORLD_HEIGHT / CELL_HEIGHT) - 1;
+            if (ticks % INTERVAL === 0){   
+                const updates = [];
+                for(let x = 0; x < xLength; x++){
+                    for(let y = 0; y < yLength; y++){
+                        let neighbors = aliveNeighborCount(x, y);
+                        if (tiles[x][y] && (neighbors !== 2 && neighbors !== 3)){
+                            updates.push({
+                                x,
+                                y,
+                            })
+                        }
+                        else if (!tiles[x][y] && neighbors === 3){
+                            updates.push({
+                                x,
+                                y,
+                            })
+                        }
+                    }
+                }
+                updates.forEach((update) => {
+                    tiles[update.x][update.y] = !tiles[update.x][update.y];
+                });
+            }
+            ticks += 1;
+        }
+    </script>
+</html>

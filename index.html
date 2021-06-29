@@ -19,46 +19,40 @@
     </style>
     <script src="./setup.js"></script>
     <script>
-        // ======================================================================================
-        // Global variable tiles, an array of arrays representing the board
-        // Each tile has the following properties,
-        // {
-        //     x: number,
-        //     y: number,
-        //     isAlive: number,
-        //     graphics: PIXI.Graphics
+        // "tiles" global var
+        // array of arrays of booleans (a matrix of booleans)
+        // boolean value represents if the tile is alive or dead
+        // i.e. tiles[x][y] is the xth column of the yth row
+
+        // TODO: uncomment this!
+        // example: loop and set all tiles to alive
+        // for(let x = 0; x < tiles.length - 1; ++x){
+        //     for(let y = 0; y < tiles[x].length - 1; ++y){
+        //         tiles[x][y] = true;
+        //     }
         // }
-        //
-        // x: x position on the board
-        // y: y position on the board
-        // isAlive: if set to true, the tile will be highlighted. otherwise it will be empty
-        // graphics: a pixi graphics object, you shouldnt need to work with this at all
 
-        // This will log the tile in the upper left corner
-        console.log(tiles[0][0]);
-        // This will log the tile in the bottom right corner
-        console.log(tiles[(WORLD_HEIGHT / CELL_HEIGHT) - 1][(WORLD_WIDTH / CELL_WIDTH) - 1]);
-        // ========================================================================================
+        // Challenge: highlight the top row
+        // Challenge: highlight the bottom row
+        // Challenge: highlight a diagonal row (starting in either top right or top left)
 
-
-
-        // Challenge: try highlighting the tiles we logged above
-
-        // Challenge: try highlighting the top row
-
-        // Challenge try hightlighting the left most column
-
-        // Challenge: implement conways game of life
-        // The function below will be run every 60 frames when the start button is selected
         // Conways rules
+        // A "neighbor" is any adjacent cell, including diagonals. a cell will have 8 neighbors.
         // If the cell is alive, then it stays alive if it has either 2 or 3 live neighbors
         // If the cell is dead, then it springs to life only in the case that it has 3 live neighbors
+
+        // The function below will be run every 60 frames when the start button is selected
         let ticks = 0;
         const runGame = () => {
             if (ticks % INTERVAL === 0){   
+
                 // Conways game logic here
+
             }
             ticks += 1;
         }
+
+
+    
     </script>
 </html>
