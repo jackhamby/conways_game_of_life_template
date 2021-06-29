@@ -30,9 +30,10 @@ viewport
     .pinch();
 viewport.position.x = -WORLD_WIDTH / 2 + WIDTH;
 viewport.position.y = -WORLD_HEIGHT / 2 + HEIGHT;
+
+// Draw grid
 const grid = new PIXI.Graphics();
 grid.lineStyle(1, 0xFFFFFF);
-
 for(let y = 0; y <= WORLD_HEIGHT; y += CELL_HEIGHT){
     grid.moveTo(0, y)
         .lineTo(WORLD_WIDTH, y);
@@ -43,6 +44,7 @@ for (let x = 0; x <= WORLD_WIDTH; x += CELL_WIDTH){
         .lineTo(x, WORLD_HEIGHT);
 }
 
+// Create tile graphics
 for (let x = 0; x < WORLD_WIDTH; x += CELL_WIDTH){
     const col = [];
     const graphicsCol = [];
@@ -54,11 +56,11 @@ for (let x = 0; x < WORLD_WIDTH; x += CELL_WIDTH){
     }
     tiles.push(col);
     graphics.push(graphicsCol);
-    // tiles.push(row);
 }
 
 viewport.addChild(grid);
 
+// Main game loop
 app.ticker.add(() => {
     const xLength = Math.floor(WORLD_WIDTH / CELL_WIDTH);
     const yLength = Math.floor(WORLD_HEIGHT / CELL_HEIGHT);
@@ -87,8 +89,6 @@ viewport.on("clicked", (event) => {
         yIndex > yLength){
             return;
         }
-    console.log('here')
-    // debugger;
     tiles[xIndex][yIndex] = !tiles[xIndex][yIndex];        
 });
 
